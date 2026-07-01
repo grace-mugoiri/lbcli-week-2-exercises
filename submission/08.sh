@@ -1,4 +1,4 @@
-# !#/bin/bash 
+#!/bin/bash
 # Create a raw transaction with a transaction fee of 20,000 satoshis 
 # The transaction fee should be 20,000 satoshis, then the rest of the amount should be sent to the address: 2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP
 # Use the UTXOs from the transaction below
