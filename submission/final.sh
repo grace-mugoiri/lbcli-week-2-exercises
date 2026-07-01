@@ -56,10 +56,11 @@ echo "Transaction ID: $TXID"
 
 # STUDENT TASK: Extract the number of inputs and outputs from the transaction
 # WRITE YOUR SOLUTION BELOW:
-NUM_INPUTS=
+
+NUM_INPUTS=$(bitcoin-cli -regtest decoderawtransaction $BASE_TX | jq '.vin | length')
 check_cmd "Input counting" "NUM_INPUTS" "$NUM_INPUTS"
 
-NUM_OUTPUTS=
+NUM_OUTPUTS=$(bitcoin-cli -regtest decoderawtransaction $BASE_TX | jq '.vout | length')
 check_cmd "Output counting" "NUM_OUTPUTS" "$NUM_OUTPUTS"
 
 echo "Number of inputs: $NUM_INPUTS"
@@ -67,7 +68,7 @@ echo "Number of outputs: $NUM_OUTPUTS"
 
 # STUDENT TASK: Extract the value of the first output in satoshis
 # WRITE YOUR SOLUTION BELOW:
-FIRST_OUTPUT_VALUE=
+FIRST_OUTPUT_VALUE=$(bitcoin-cli -regtest decoderawtransaction $BASE_TX | jq '.vout[0].value * 100000000' | awk '{printf "%.0f", $0}')
 check_cmd "Output value extraction" "FIRST_OUTPUT_VALUE" "$FIRST_OUTPUT_VALUE"
 
 echo "First output value: $FIRST_OUTPUT_VALUE satoshis"
@@ -88,10 +89,10 @@ echo ""
 # STUDENT TASK: Extract the available UTXOs from the decoded transaction for spending
 # WRITE YOUR SOLUTION BELOW:
 UTXO_TXID=$TXID
-UTXO_VOUT_INDEX=
+UTXO_VOUT_INDEX=$(bitcoin-cli -regtest decoderawtransaction $BASE_TX | jq '.vout[0].n')
 check_cmd "UTXO vout selection" "UTXO_VOUT_INDEX" "$UTXO_VOUT_INDEX"
 
-UTXO_VALUE=
+UTXO_VALUE=$(bitcoin-cli -regtest decoderawtransaction $BASE_TX | jq '.vout[0].value * 100000000' | awk '{printf "%.0f", $0}')
 check_cmd "UTXO value extraction" "UTXO_VALUE" "$UTXO_VALUE"
 
 echo "Selected UTXO:"
@@ -130,11 +131,11 @@ echo ""
 
 # STUDENT TASK: Calculate the approximate transaction size and fee
 # WRITE YOUR SOLUTION BELOW:
-TX_SIZE=
+TX_SIZE=10 + (1 * 68) + (2 * 31)
 check_cmd "Transaction size calculation" "TX_SIZE" "$TX_SIZE"
 
 FEE_RATE=10  # satoshis/vbyte
-FEE_SATS=
+FEE_SATS=$[$TX_SIZE * $FEE_RATE]
 check_cmd "Fee calculation" "FEE_SATS" "$FEE_SATS"
 
 echo "Estimated transaction size: $TX_SIZE vbytes"
@@ -168,7 +169,7 @@ PAYMENT_ADDRESS="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
 CHANGE_ADDRESS="bcrt1qg09ftw43jvlhj4wlwwhkxccjzmda3kdm4y83ht"
 
 # STUDENT TASK: Create a proper input JSON for createrawtransaction
-TX_INPUTS=
+TX_INPUTS=$'[{"txid":"'$UTXO_TXID'","vout":'$UTXO_VOUT_INDEX',"sequence":4294967293}]'
 check_cmd "Input JSON creation" "TX_INPUTS" "$TX_INPUTS"
 
 # Verify RBF is enabled in the input structure
