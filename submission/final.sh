@@ -131,7 +131,7 @@ echo ""
 
 # STUDENT TASK: Calculate the approximate transaction size and fee
 # WRITE YOUR SOLUTION BELOW:
-TX_SIZE=10 + (1 * 68) + (2 * 31)
+TX_SIZE=10+(1 * 68)+(2 * 31)
 check_cmd "Transaction size calculation" "TX_SIZE" "$TX_SIZE"
 
 FEE_RATE=10  # satoshis/vbyte
