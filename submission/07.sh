@@ -5,5 +5,8 @@ raw_tx="01000000000101c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23
 TXID=$(bitcoin-cli -regtest decoderawtransaction "$raw_tx" | jq -r '.txid')
 
 bitcoin-cli -regtest createrawtransaction \
-"[{\"txid\":\"$TXID\",\"vout\":0}]" \
+'[
+  {"txid":"77efbd235f00d1d92c77e3e4b2a5f6d9954547d0865f8d695eecbbde8e92b0c8","vout":0},
+  {"txid":"77efbd235f00d1d92c77e3e4b2a5f6d9954547d0865f8d695eecbbde8e92b0c8","vout":1}
+]' \
 '{"2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP":0.20000000}'
